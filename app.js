@@ -171,7 +171,7 @@ function app(){
             {
               type: "input",
               name: "intern_name",
-              message: "Enter engineer's name",
+              message: "Enter intern's name",
               validate: res => {
                 if (res !== "") {
                   return true;
@@ -182,7 +182,7 @@ function app(){
             {
               type: "input",
               name: "intern_id",
-              message: "Enter engineer's id",
+              message: "Enter intern's id",
               validate: res => {
                 if (res > 0) {
                     return true;
