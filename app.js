@@ -20,13 +20,14 @@ function app(){
     newManager();
     function newManager() {
         console.log("Need manager of team before building team");
-        
+        //Inquirer prompts user for the team manager
         inquirer.prompt([
           {
             type: "input",
             name: "manager_name",
             message: "What is the team manager's name?",
             validate: res => {
+                //Ensure input length is > 0
               if (res !== "") {
                 return true;
               }
@@ -38,6 +39,7 @@ function app(){
             name: "manager_id",
             message: "What is the team manager's id?",
             validate: res => {
+                //Ensure input is > 0
               if (res > 0) {
                 return true;
               }
@@ -49,6 +51,7 @@ function app(){
             name: "manager_email",
             message: "What is the team manager's email?",
             validate: res => {
+                //Ensure input has format <string> @ <string> . <string>
               const regexCheck = res.match(
                 /\S+@\S+\.\S+/
               );
@@ -63,6 +66,7 @@ function app(){
             name: "manager_office_number",
             message: "What is the team manager's office number?",
             validate: res => {
+                //Ensure input is not negative
                 if (res > 0) {
                     return true;
                 }
@@ -70,10 +74,12 @@ function app(){
             }
           }
         ]).then(res => {
-            //
+            //Create a new manager object with user input as parameters
           const newManager = new Manager(res.manager_name, res.manager_id, res.manager_email, res.manager_office_number);
+            //Push to team array
           team.push(newManager);
         }).then(function() {
+            //Continue (or return) to add members section
             addMembers();
         })
     }
@@ -105,9 +111,16 @@ function app(){
         }
 
        function createTeam() {
-           fs.mkdirSync(OUTPUT_DIR);
-           fs.writeFileaSync(outputPath, render(team));
-       }
+           //Check if the filepath exists, and if it does, set path and render the html file
+           if (fs.existsSync(OUTPUT_DIR)) {
+                fs.writeFileSync(outputPath, render(team));
+           }
+           //User won't need to delete the output folder when running the app a second time
+           else {
+                fs.mkdirSync(OUTPUT_DIR);
+                fs.writeFileSync(outputPath, render(team));
+           }
+        }
 
        function newEngineer() {
             console.log("Adding new engineer");
