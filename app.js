@@ -16,7 +16,7 @@ const team = [];
 app();
 
 function app(){
-    function createManager() {
+    function newManager() {
         console.log("Need manager of team before building team");
         
         inquirer.prompt([
@@ -47,10 +47,10 @@ function app(){
             name: "manager_email",
             message: "What is the team manager's email?",
             validate: res => {
-              const pass = res.match(
+              const regexCheck = res.match(
                 /\S+@\S+\.\S+/
               );
-              if (pass) {
+              if (regexCheck) {
                 return true;
               }
               return "Email address is invalid";
@@ -91,19 +91,82 @@ function app(){
           ]).then(res => {
             switch(res.new_member) {
                 case "Engineer":
-                    addEngineer();
+                    newEngineer();
                 break;
                 case "Intern":
-                    addIntern();
+                    newIntern();
                 break;
                 case "Done":
                     createTeam();
             }
           });
         }
+
        function createTeam() {
            fs.mkdirSync(OUTPUT_DIR);
            fs.writeFileaSync(outputPath, render(team));
+       }
+
+       function newEngineer() {
+            console.log("Adding new engineer");
+            inquirer.prompt([
+                {
+                  type: "input",
+                  name: "engineer_name",
+                  message: "Enter engineer's name",
+                  validate: res => {
+                    if (res !== "") {
+                      return true;
+                    }
+                    return "Engineer name can't be 0 characters";
+                  }
+                },
+                {
+                  type: "input",
+                  name: "engineer_id",
+                  message: "Enter engineer's id",
+                  validate: res => {
+                    if (res > 0) {
+                        return true;
+                      }
+                    return "Id must not be negative";
+                  }
+                },
+                {
+                  type: "input",
+                  name: "engineer_email",
+                  message: "Enter engineer's email",
+                  validate: res => {
+                    const regexCheck = res.match(
+                      /\S+@\S+\.\S+/
+                    );
+                    if (regexCheck) {
+                      return true;
+                    }
+                    return "Email address is invalid";
+                  }
+                },
+                {
+                  type: "input",
+                  name: "engineer_github",
+                  message: "Enter engineer's GitHub name?",
+                  validate: res => {
+                    if (res !== "") {
+                      return true;
+                    }
+                    return "Github name can't have 0 characters";
+                  }
+                }
+              ]).then(res => {
+                const engineer = new Engineer(res.engineer_name, res.engineer_id, res.engineer_email, res.engineer_github);
+                teamMembers.push(engineer);      
+              }).then(function() {
+                  addMembers();
+              })
+       }
+
+       function newIntern() {
+           
        }
     }
 
