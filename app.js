@@ -16,6 +16,8 @@ const team = [];
 app();
 
 function app(){
+
+    newManager();
     function newManager() {
         console.log("Need manager of team before building team");
         
@@ -217,11 +219,9 @@ function app(){
             }
           ]).then(res => {
             const intern = new Intern(res.intern_name, res.intern_id, res.intern_email, res.intern_school);
-            team.push(itern);      
+            team.push(intern);      
           }).then(function() {
               addMembers();
           })
        }
-    }
-
 }
