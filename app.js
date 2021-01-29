@@ -70,9 +70,37 @@ function app(){
         ]).then(res => {
           const newManager = new Manager(res.manager_name, res.manager_id, res.manager_email, res.manager_office_number);
           team.push(newManager);
-          //addMembers();
-        });
-      }
+        }).then(function() {
+            addMembers();
+        })
+    }
     
+    function addMembers() {
+        inquirer.prompt([
+            {
+              type: "list",
+              name: "new_member",
+              message: "Select which type of employee to add",
+              choices: [
+                "Intern",
+                "Engineer",
+                "Done"
+              ]
+            }
+          ]).then(res => {
+            switch(res.new_member) {
+                case "Engineer":
+                    addEngineer();
+                break;
+                case "Intern":
+                    addIntern();
+                break;
+                case "Done":
+                    //Create team
+            }
+          });
+        }
+       
+    }
 
 }
