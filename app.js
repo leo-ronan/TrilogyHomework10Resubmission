@@ -68,6 +68,7 @@ function app(){
             }
           }
         ]).then(res => {
+            //
           const newManager = new Manager(res.manager_name, res.manager_id, res.manager_email, res.manager_office_number);
           team.push(newManager);
         }).then(function() {
@@ -96,11 +97,14 @@ function app(){
                     addIntern();
                 break;
                 case "Done":
-                    //Create team
+                    createTeam();
             }
           });
         }
-       
+       function createTeam() {
+           fs.mkdirSync(OUTPUT_DIR);
+           fs.writeFileaSync(outputPath, render(team));
+       }
     }
 
 }
