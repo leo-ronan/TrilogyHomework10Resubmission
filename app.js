@@ -159,14 +159,68 @@ function app(){
                 }
               ]).then(res => {
                 const engineer = new Engineer(res.engineer_name, res.engineer_id, res.engineer_email, res.engineer_github);
-                teamMembers.push(engineer);      
+                team.push(engineer);      
               }).then(function() {
                   addMembers();
               })
        }
 
        function newIntern() {
-           
+        console.log("Adding new intern");
+        inquirer.prompt([
+            {
+              type: "input",
+              name: "intern_name",
+              message: "Enter engineer's name",
+              validate: res => {
+                if (res !== "") {
+                  return true;
+                }
+                return "Intern's name can't be 0 characters";
+              }
+            },
+            {
+              type: "input",
+              name: "intern_id",
+              message: "Enter engineer's id",
+              validate: res => {
+                if (res > 0) {
+                    return true;
+                  }
+                return "Id must not be negative";
+              }
+            },
+            {
+              type: "input",
+              name: "intern_email",
+              message: "Enter intern's email",
+              validate: res => {
+                const regexCheck = res.match(
+                  /\S+@\S+\.\S+/
+                );
+                if (regexCheck) {
+                  return true;
+                }
+                return "Email address is invalid";
+              }
+            },
+            {
+              type: "input",
+              name: "intern_school",
+              message: "Enter school intern attends",
+              validate: res => {
+                if (res !== "") {
+                  return true;
+                }
+                return "School name can't have 0 characters";
+              }
+            }
+          ]).then(res => {
+            const intern = new Intern(res.intern_name, res.intern_id, res.intern_email, res.intern_school);
+            team.push(itern);      
+          }).then(function() {
+              addMembers();
+          })
        }
     }
 
